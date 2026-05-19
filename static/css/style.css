@@ -535,6 +535,122 @@ a { color: inherit; text-decoration: none; }
     color: var(--ink);
 }
 
+.btn-watch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--ink-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    padding: 0.65rem 0.25rem;
+    transition: color 0.2s;
+}
+
+.btn-watch:hover { color: var(--ink); }
+
+.watch-play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.65rem;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-watch:hover .watch-play {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ------------------------------------------------------------------ */
+/* Video modal                                                         */
+/* ------------------------------------------------------------------ */
+
+.vmodal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1.5rem;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    /* animation */
+    opacity: 0;
+    transition: opacity 0.22s ease;
+}
+
+.vmodal-overlay.vmodal-visible {
+    opacity: 1;
+}
+
+/* hide with display:none when not shown — toggled via JS */
+.vmodal-overlay[hidden] { display: none; }
+
+.vmodal-box {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+    transform: translateY(16px);
+    transition: transform 0.25s ease;
+}
+
+.vmodal-overlay.vmodal-visible .vmodal-box {
+    transform: translateY(0);
+}
+
+.vmodal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.vmodal-close:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* 16:9 iframe wrapper */
+.vmodal-video-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.vmodal-video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 /* ------------------------------------------------------------------ */
 /* Features section                                                    */
 /* ------------------------------------------------------------------ */
