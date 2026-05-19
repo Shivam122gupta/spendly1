@@ -20,46 +20,144 @@
             <a href="{{ url_for('register') }}" class="btn-primary">Start tracking free</a>
             <a href="{{ url_for('login') }}" class="btn-ghost">Sign in</a>
         </div>
-    </div>
-    <div class="hero-visual">
-        <div class="mock-card">
-            <div class="mock-card-header">
-                <span class="mock-label">March 2026</span>
-                <span class="mock-total">₹12,450</span>
+        <div class="hero-social-proof">
+            <div class="avatar-stack">
+                <div class="avatar" style="background:#c17f24;">R</div>
+                <div class="avatar" style="background:#5b7fa6;">P</div>
+                <div class="avatar" style="background:#8b5e83;">A</div>
+                <div class="avatar" style="background:#1a472a;">S</div>
             </div>
-            <div class="mock-bars">
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Bills</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar" style="width: 72%"></div>
-                    </div>
-                    <span class="mock-amt">₹4,500</span>
+            <span class="social-proof-text">Trusted by <strong>10,000+</strong> users</span>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="mock-app">
+            <!-- Sidebar -->
+            <div class="mock-sidebar">
+                <div class="mock-sidebar-brand">
+                    <span class="brand-icon">◈</span>
+                    <span class="mock-sidebar-name">Spendly</span>
                 </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Food</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-2" style="width: 52%"></div>
+                <nav class="mock-nav">
+                    <div class="mock-nav-item mock-nav-active">
+                        <span class="mock-nav-icon">⊞</span> Overview
                     </div>
-                    <span class="mock-amt">₹3,200</span>
+                    <div class="mock-nav-item">
+                        <span class="mock-nav-icon">↕</span> Transactions
+                    </div>
+                    <div class="mock-nav-item">
+                        <span class="mock-nav-icon">◫</span> Budgets
+                    </div>
+                    <div class="mock-nav-item">
+                        <span class="mock-nav-icon">◑</span> Categories
+                    </div>
+                    <div class="mock-nav-item">
+                        <span class="mock-nav-icon">◈</span> Reports
+                    </div>
+                    <div class="mock-nav-item">
+                        <span class="mock-nav-icon">⚙</span> Settings
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Dashboard panel -->
+            <div class="mock-dashboard">
+                <div class="mock-dash-header">
+                    <span class="mock-dash-title">Dashboard</span>
+                    <span class="mock-dash-period">March 2026 ▾</span>
                 </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Health</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-3" style="width: 33%"></div>
+
+                <!-- Stat cards -->
+                <div class="mock-stats">
+                    <div class="mock-stat-card">
+                        <span class="mock-stat-label">Total Expenses</span>
+                        <span class="mock-stat-value">₹12,450</span>
+                        <span class="mock-stat-change positive">+12% from last month</span>
                     </div>
-                    <span class="mock-amt">₹2,050</span>
+                    <div class="mock-stat-card">
+                        <span class="mock-stat-label">Total Transactions</span>
+                        <span class="mock-stat-value">42</span>
+                        <span class="mock-stat-change positive">+8% from last month</span>
+                    </div>
                 </div>
-                <div class="mock-bar-row">
-                    <span class="mock-cat">Transport</span>
-                    <div class="mock-bar-track">
-                        <div class="mock-bar mock-bar-4" style="width: 28%"></div>
+
+                <!-- Donut chart + legend -->
+                <div class="mock-chart-row">
+                    <div class="mock-donut-wrap">
+                        <span class="mock-chart-section-label">Expenses by Category</span>
+                        <div class="mock-donut-area">
+                            <svg class="mock-donut" viewBox="0 0 80 80">
+                                <!-- Bills 36% -->
+                                <circle r="28" cx="40" cy="40" fill="none" stroke="#1a472a" stroke-width="16"
+                                    stroke-dasharray="63.3 112.7" stroke-dashoffset="0"/>
+                                <!-- Food 26% -->
+                                <circle r="28" cx="40" cy="40" fill="none" stroke="#c17f24" stroke-width="16"
+                                    stroke-dasharray="45.7 130.3" stroke-dashoffset="-63.3"/>
+                                <!-- Health 16% -->
+                                <circle r="28" cx="40" cy="40" fill="none" stroke="#5b7fa6" stroke-width="16"
+                                    stroke-dasharray="28.2 147.8" stroke-dashoffset="-109"/>
+                                <!-- Transport 14% -->
+                                <circle r="28" cx="40" cy="40" fill="none" stroke="#8b5e83" stroke-width="16"
+                                    stroke-dasharray="24.6 151.4" stroke-dashoffset="-137.2"/>
+                            </svg>
+                        </div>
+                        <div class="mock-legend">
+                            <div class="mock-legend-item">
+                                <span class="mock-legend-dot" style="background:#1a472a"></span>
+                                <span class="mock-legend-cat">Bills</span>
+                                <span class="mock-legend-amt">₹4,500 (36%)</span>
+                            </div>
+                            <div class="mock-legend-item">
+                                <span class="mock-legend-dot" style="background:#c17f24"></span>
+                                <span class="mock-legend-cat">Food</span>
+                                <span class="mock-legend-amt">₹3,200 (26%)</span>
+                            </div>
+                            <div class="mock-legend-item">
+                                <span class="mock-legend-dot" style="background:#5b7fa6"></span>
+                                <span class="mock-legend-cat">Health</span>
+                                <span class="mock-legend-amt">₹2,050 (16%)</span>
+                            </div>
+                            <div class="mock-legend-item">
+                                <span class="mock-legend-dot" style="background:#8b5e83"></span>
+                                <span class="mock-legend-cat">Transport</span>
+                                <span class="mock-legend-amt">₹1,800 (14%)</span>
+                            </div>
+                        </div>
                     </div>
-                    <span class="mock-amt">₹1,800</span>
+                </div>
+
+                <!-- Recent transactions -->
+                <div class="mock-txns">
+                    <span class="mock-txns-label">Recent Transactions</span>
+                    <div class="mock-txn-row">
+                        <div class="mock-txn-icon">⊡</div>
+                        <div class="mock-txn-info">
+                            <span class="mock-txn-name">Electricity Bill</span>
+                            <span class="mock-txn-cat">Bills</span>
+                        </div>
+                        <div class="mock-txn-right">
+                            <span class="mock-txn-amt">₹1,200</span>
+                            <span class="mock-txn-date">Mar 28, 2026</span>
+                        </div>
+                    </div>
+                    <div class="mock-txn-row">
+                        <div class="mock-txn-icon">✦</div>
+                        <div class="mock-txn-info">
+                            <span class="mock-txn-name">Grocery Shopping</span>
+                            <span class="mock-txn-cat">Food</span>
+                        </div>
+                        <div class="mock-txn-right">
+                            <span class="mock-txn-amt">₹850</span>
+                            <span class="mock-txn-date">Mar 28, 2026</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <section class="features">
     <div class="features-inner">
