@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Terms and Conditions — Spendly{% endblock %}
+
+{% block content %}
+
+<!-- Page header -->
+<div class="legal-hero">
+    <div class="legal-hero-inner">
+        <div class="hero-badge">Legal</div>
+        <h1 class="legal-hero-title">Terms and <em>Conditions</em></h1>
+        <p class="legal-hero-sub">Please read these terms carefully before using Spendly.</p>
+        <p class="legal-meta">Last updated: <strong>May 2025</strong></p>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="legal-body">
+    <div class="legal-card">
+
+        <div class="legal-section">
+            <div class="legal-section-num">01</div>
+            <div class="legal-section-content">
+                <h2>Acceptance of Terms</h2>
+                <p>
+                    By accessing or using Spendly ("the Service"), you agree to be bound by these Terms and
+                    Conditions. If you do not agree with any part of these terms, you may not access or use
+                    the Service. These terms apply to all visitors, registered users, and anyone else who
+                    interacts with the Service.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section">
+            <div class="legal-section-num">02</div>
+            <div class="legal-section-content">
+                <h2>Use of Service</h2>
+                <p>
+                    Spendly is a personal expense tracking tool intended for individual, non-commercial use.
+                    You agree to use the Service only for lawful purposes and in a way that does not infringe
+                    the rights of others. You are solely responsible for maintaining the confidentiality of
+                    your account credentials and for all activity that occurs under your account.
+                </p>
+                <p>You must not:</p>
+                <ul>
+                    <li>Use the Service for any unlawful, fraudulent, or harmful purpose.</li>
+                    <li>Attempt to gain unauthorised access to any part of the Service or its infrastructure.</li>
+                    <li>Upload or transmit any malicious code, viruses, or disruptive content.</li>
+                    <li>Reproduce, duplicate, or resell any part of the Service without express written permission.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section">
+            <div class="legal-section-num">03</div>
+            <div class="legal-section-content">
+                <h2>User Data</h2>
+                <p>
+                    You retain full ownership of all financial data and records you enter into Spendly. By
+                    using the Service, you grant Spendly a limited licence to store and process your data
+                    solely for the purpose of providing the Service to you.
+                </p>
+                <p>
+                    We take reasonable technical and organisational measures to protect your data. However,
+                    no method of transmission over the internet is 100% secure. You are encouraged to use a
+                    strong, unique password and to log out when using shared devices. We will never sell your
+                    personal data to third parties.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section">
+            <div class="legal-section-num">04</div>
+            <div class="legal-section-content">
+                <h2>Limitation of Liability</h2>
+                <p>
+                    Spendly is provided on an "as is" and "as available" basis, without warranties of any
+                    kind — express or implied. We do not warrant that the Service will be uninterrupted,
+                    error-free, or free of harmful components.
+                </p>
+                <p>
+                    To the fullest extent permitted by applicable law, Spendly and its creators shall not be
+                    liable for any indirect, incidental, special, consequential, or punitive damages —
+                    including loss of data, loss of profits, or loss of goodwill — arising out of or in
+                    connection with your use of, or inability to use, the Service.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section">
+            <div class="legal-section-num">05</div>
+            <div class="legal-section-content">
+                <h2>Changes to Terms</h2>
+                <p>
+                    We reserve the right to modify these Terms and Conditions at any time. When changes are
+                    made, the "Last updated" date at the top of this page will be revised. Continued use of
+                    the Service after any modifications constitutes your acceptance of the updated terms.
+                    We encourage you to review this page periodically.
+                </p>
+            </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section">
+            <div class="legal-section-num">06</div>
+            <div class="legal-section-content">
+                <h2>Contact</h2>
+                <p>
+                    If you have any questions about these Terms and Conditions, please reach out through the
+                    contact information available on the Spendly homepage.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="legal-back-row">
+        <a href="{{ url_for('landing') }}" class="legal-back-link">&larr; Back to home</a>
+    </div>
+</div>
+
+{% endblock %}
