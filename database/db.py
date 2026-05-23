@@ -97,3 +97,24 @@ def get_db():
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
+
+
+def create_user(name, email, password):
+    """Insert a new user into the users table and return the new id.
+
+    Hashes *password* with werkzeug before storing.
+    Raises sqlite3.IntegrityError if *email* is already taken (UNIQUE constraint).
+    """
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+        (name, email, generate_password_hash(password)),
+    )
+    user_id = cursor.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return user_id
