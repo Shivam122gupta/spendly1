@@ -1,6 +1,6 @@
 import sqlite3
 
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def seed_db():
@@ -118,3 +118,18 @@ def create_user(name, email, password):
     conn.close()
 
     return user_id
+
+
+def get_user_by_email(email):
+    """Return the users row whose email matches *email*, or None if not found.
+
+    Uses a parameterised query — never an f-string — to prevent SQL injection.
+    The returned object is a sqlite3.Row, so columns are accessible by name
+    (e.g. row["id"], row["password_hash"]).
+    """
+    conn = get_db()
+    row = conn.execute(
+        "SELECT * FROM users WHERE email = ?", (email,)
+    ).fetchone()
+    conn.close()
+    return row
