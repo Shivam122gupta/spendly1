@@ -20,6 +20,10 @@
             </a>
             <div class="nav-links">
                 {% if session.get("user_id") %}
+                    <a href="{{ url_for('profile') }}" class="nav-profile-link">
+                        <span class="nav-avatar">{{ session.get("user_name", "U")[0] | upper }}</span>
+                        <span>{{ session.get("user_name", "") }}</span>
+                    </a>
                     <a href="{{ url_for('logout') }}" class="nav-cta">Log out</a>
                 {% else %}
                     <a href="{{ url_for('login') }}">Sign in</a>
@@ -45,6 +49,7 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>

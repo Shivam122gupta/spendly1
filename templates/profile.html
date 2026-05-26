@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — Spendly{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+    <!-- ── User info card ──────────────────────────────────────────────── -->
+    <section class="profile-header-card">
+        <div class="profile-avatar-wrap">
+            <div class="profile-avatar" aria-hidden="true">
+                {{ user.name[0] | upper }}
+            </div>
+            <span class="profile-avatar-dot" aria-hidden="true"></span>
+        </div>
+
+        <div class="profile-header-info">
+            <h1 class="profile-name">{{ user.name }}</h1>
+            <p class="profile-email">
+                <i data-lucide="mail"></i>
+                {{ user.email }}
+            </p>
+            <div class="profile-meta-badges">
+                <span class="profile-meta-pill">
+                    <i data-lucide="calendar"></i>
+                    Member since {{ user.member_since }}
+                </span>
+                <span class="profile-meta-pill profile-meta-pill--active">
+                    <i data-lucide="check-circle"></i>
+                    Active account
+                </span>
+            </div>
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="btn-ghost profile-logout-btn">
+            <i data-lucide="log-out"></i>
+            Log out
+        </a>
+    </section>
+
+    <!-- ── Summary stats row ──────────────────────────────────────────── -->
+    <section class="profile-stats-row" aria-label="Spending summary">
+        <div class="stat-card stat-card--accent">
+            <div class="stat-icon"><i data-lucide="indian-rupee"></i></div>
+            <span class="stat-label">Total Spent</span>
+            <span class="stat-value">{{ stats.total_spent }}</span>
+        </div>
+        <div class="stat-card stat-card--accent">
+            <div class="stat-icon"><i data-lucide="receipt"></i></div>
+            <span class="stat-label">Transactions</span>
+            <span class="stat-value">{{ stats.transaction_count }}</span>
+        </div>
+        <div class="stat-card stat-card--accent">
+            <div class="stat-icon"><i data-lucide="tag"></i></div>
+            <span class="stat-label">Top Category</span>
+            <span class="stat-value stat-value--text">{{ stats.top_category }}</span>
+        </div>
+    </section>
+
+    <!-- ── Transaction history ─────────────────────────────────────────── -->
+    <section class="profile-section" aria-labelledby="txn-heading">
+        <h2 class="section-title" id="txn-heading">
+            <i data-lucide="clock"></i>
+            Recent Transactions
+        </h2>
+        <div class="txn-table-wrap">
+            <table class="txn-table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="txn-icon-col"></th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Category</th>
+                        <th scope="col" class="txn-amount-col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for txn in transactions %}
+                    <tr>
+                        <td class="txn-icon-cell">
+                            <div class="txn-cat-icon txn-cat-icon--{{ txn.category | lower }}">
+                                {{ txn.category[0] | upper }}
+                            </div>
+                        </td>
+                        <td class="txn-date-cell">{{ txn.date }}</td>
+                        <td class="txn-desc-cell">{{ txn.description }}</td>
+                        <td>
+                            <span class="badge badge--{{ txn.category | lower }}">{{ txn.category }}</span>
+                        </td>
+                        <td class="txn-amount-cell txn-amount-col">{{ txn.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ── Category breakdown ──────────────────────────────────────────── -->
+    <section class="profile-section" aria-labelledby="cat-heading">
+        <h2 class="section-title" id="cat-heading">
+            <i data-lucide="pie-chart"></i>
+            Spending by Category
+        </h2>
+        <ul class="category-list">
+            {% for cat in categories %}
+            <li class="category-row">
+                <div class="category-row-top">
+                    <div class="category-name-group">
+                        <span class="category-dot category-dot--{{ cat.name | lower }}" aria-hidden="true"></span>
+                        <span class="category-name">{{ cat.name }}</span>
+                    </div>
+                    <div class="category-right">
+                        <span class="category-percent">{{ cat.percent }}%</span>
+                        <span class="category-amount">{{ cat.amount }}</span>
+                    </div>
+                </div>
+                <div class="progress-bar-track" role="progressbar"
+                     aria-valuenow="{{ cat.percent }}" aria-valuemin="0" aria-valuemax="100"
+                     aria-label="{{ cat.name }} spending progress">
+                    <div class="progress-bar-fill" data-bar-w="{{ cat.percent }}"></div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</div>
+{% endblock %}
