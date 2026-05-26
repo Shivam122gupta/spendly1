@@ -66,3 +66,44 @@
     }
   });
 }());
+
+// ------------------------------------------------------------------ //
+// Lucide icons                                                        //
+// ------------------------------------------------------------------ //
+
+if (typeof lucide !== 'undefined') {
+  lucide.createIcons();
+}
+
+// ------------------------------------------------------------------ //
+// Progress-bar entrance animation                                     //
+// ------------------------------------------------------------------ //
+
+(function () {
+  var fills = document.querySelectorAll('.progress-bar-fill[data-bar-w]');
+  if (!fills.length) return;
+
+  // Start all bars at 0 (CSS default is already 0 via --bar-w fallback)
+  fills.forEach(function (el) {
+    el.style.setProperty('--bar-w', '0%');
+  });
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var w  = el.getAttribute('data-bar-w');
+          // Small delay so the transition is visible after element enters view
+          setTimeout(function () {
+            el.style.setProperty('--bar-w', w + '%');
+          }, 80);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  fills.forEach(function (el) { observer.observe(el); });
+}());
