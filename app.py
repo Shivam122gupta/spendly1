@@ -3,6 +3,12 @@ import sqlite3
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
 from database.db import get_db, init_db, seed_db, create_user, get_user_by_email
+from database.queries import (
+    get_user_by_id,
+    get_summary_stats,
+    get_recent_transactions,
+    get_category_breakdown,
+)
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-change-in-production"
@@ -114,32 +120,42 @@ def profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
-    user = {
-        "name":         "Arjun Sharma",
-        "email":        "arjun.sharma@example.com",
-        "member_since": "January 2024",
-    }
+    uid  = session["user_id"]
+    user = get_user_by_id(uid)
 
+    if user is None:                         # stale session — user no longer in DB
+        session.clear()
+        return redirect(url_for("login"))
+
+    # ── Live DB queries ───────────────────────────────────────────────
+    raw_stats = get_summary_stats(uid)
+    raw_txns  = get_recent_transactions(uid, limit=10)
+    raw_cats  = get_category_breakdown(uid)
+
+    # ── Format for template ───────────────────────────────────────────
     stats = {
-        "total_spent":       "₹ 24,350",
-        "transaction_count": 47,
-        "top_category":      "Food",
+        "total_spent":       f"₹ {raw_stats['total_spent']:,.2f}",
+        "transaction_count": raw_stats["transaction_count"],
+        "top_category":      raw_stats["top_category"],
     }
 
     transactions = [
-        {"date": "20 May 2025", "description": "Zomato Order",       "category": "Food",       "amount": "₹ 480"},
-        {"date": "18 May 2025", "description": "Metro Card Recharge", "category": "Transport",  "amount": "₹ 200"},
-        {"date": "15 May 2025", "description": "Amazon Purchase",     "category": "Shopping",   "amount": "₹ 1,299"},
-        {"date": "12 May 2025", "description": "Electricity Bill",    "category": "Utilities",  "amount": "₹ 750"},
-        {"date": "10 May 2025", "description": "Pharmacy",            "category": "Health",     "amount": "₹ 320"},
+        {
+            "date":        t["date"],
+            "description": t["description"],
+            "category":    t["category"],
+            "amount":      f"₹ {t['amount']:,.2f}",
+        }
+        for t in raw_txns
     ]
 
     categories = [
-        {"name": "Food",       "amount": "₹ 8,200",  "percent": 75},
-        {"name": "Shopping",   "amount": "₹ 6,450",  "percent": 59},
-        {"name": "Transport",  "amount": "₹ 3,900",  "percent": 36},
-        {"name": "Utilities",  "amount": "₹ 3,200",  "percent": 29},
-        {"name": "Health",     "amount": "₹ 2,600",  "percent": 24},
+        {
+            "name":    c["name"],
+            "amount":  f"₹ {c['amount']:,.2f}",
+            "percent": c["pct"],
+        }
+        for c in raw_cats
     ]
 
     return render_template(
