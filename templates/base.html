@@ -34,6 +34,7 @@
     </nav>
 
     <main class="main-content">
+        {% block flash_messages %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class="flash-messages" role="alert" aria-live="polite">
@@ -43,9 +44,11 @@
                 </ul>
             {% endif %}
         {% endwith %}
+        {% endblock %}
         {% block content %}{% endblock %}
     </main>
 
+    {% block footer %}
     <footer class="footer">
         <div class="footer-inner">
             <span class="brand-icon">◈</span>
@@ -57,6 +60,7 @@
             </p>
         </div>
     </footer>
+    {% endblock %}
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
