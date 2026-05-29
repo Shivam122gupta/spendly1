@@ -2,6 +2,10 @@
 
 {% block title %}Profile — Spendly{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="profile-page">
 
@@ -36,6 +40,44 @@
             <i data-lucide="log-out"></i>
             Log out
         </a>
+    </section>
+
+    <!-- ── Date filter bar ───────────────────────────────────────── -->
+    <section class="filter-bar" aria-label="Date filter">
+        <div class="filter-presets">
+            <a id="preset-this-month"
+               href="{{ preset_this_month }}"
+               class="filter-preset-btn{% if active_preset == 'this_month' %} filter-preset-btn--active{% endif %}">
+                This Month
+            </a>
+            <a id="preset-3months"
+               href="{{ preset_3months }}"
+               class="filter-preset-btn{% if active_preset == '3months' %} filter-preset-btn--active{% endif %}">
+                Last 3 Months
+            </a>
+            <a id="preset-6months"
+               href="{{ preset_6months }}"
+               class="filter-preset-btn{% if active_preset == '6months' %} filter-preset-btn--active{% endif %}">
+                Last 6 Months
+            </a>
+            <a id="preset-all"
+               href="{{ preset_all }}"
+               class="filter-preset-btn{% if active_preset == 'all' %} filter-preset-btn--active{% endif %}">
+                All Time
+            </a>
+        </div>
+
+        <form class="filter-custom-form" method="get" action="{{ url_for('profile') }}">
+            <label class="filter-label" for="date_from">From</label>
+            <input class="filter-date-input{% if active_preset == 'custom' %} filter-date-input--active{% endif %}"
+                   type="date" id="date_from" name="date_from"
+                   value="{{ date_from }}">
+            <label class="filter-label" for="date_to">To</label>
+            <input class="filter-date-input{% if active_preset == 'custom' %} filter-date-input--active{% endif %}"
+                   type="date" id="date_to" name="date_to"
+                   value="{{ date_to }}">
+            <button class="filter-apply-btn" type="submit" id="filter-apply-btn">Apply</button>
+        </form>
     </section>
 
     <!-- ── Summary stats row ──────────────────────────────────────────── -->
@@ -75,6 +117,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% if transactions %}
                     {% for txn in transactions %}
                     <tr>
                         <td class="txn-icon-cell">
@@ -90,6 +133,11 @@
                         <td class="txn-amount-cell txn-amount-col">{{ txn.amount }}</td>
                     </tr>
                     {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="txn-empty-state">No transactions in this period.</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -120,6 +168,8 @@
                     <div class="progress-bar-fill" data-bar-w="{{ cat.percent }}"></div>
                 </div>
             </li>
+            {% else %}
+            <li class="category-empty-state">No spending data for this period.</li>
             {% endfor %}
         </ul>
     </section>

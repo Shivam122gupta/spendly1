@@ -1,4 +1,6 @@
+import os
 import sqlite3
+from datetime import date, datetime, timedelta
 
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
@@ -11,7 +13,7 @@ from database.queries import (
 )
 
 app = Flask(__name__)
-app.secret_key = "dev-secret-change-in-production"
+app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(32)
 
 # ------------------------------------------------------------------ #
 # Database initialisation                                             #
@@ -20,6 +22,24 @@ app.secret_key = "dev-secret-change-in-production"
 with app.app_context():
     init_db()
     seed_db()
+
+
+# ------------------------------------------------------------------ #
+# Helpers                                                             #
+# ------------------------------------------------------------------ #
+
+def _parse_date(raw):
+    """Return an ISO date string 'YYYY-MM-DD' or None on bad/missing input.
+
+    Validates format via strptime so malformed values never reach the DB.
+    """
+    if not raw or len(raw) != 10:
+        return None
+    try:
+        datetime.strptime(raw, "%Y-%m-%d")
+        return raw
+    except ValueError:
+        return None
 
 
 # ------------------------------------------------------------------ #
@@ -127,12 +147,44 @@ def profile():
         session.clear()
         return redirect(url_for("login"))
 
-    # ── Live DB queries ───────────────────────────────────────────────
-    raw_stats = get_summary_stats(uid)
-    raw_txns  = get_recent_transactions(uid, limit=10)
-    raw_cats  = get_category_breakdown(uid)
+    # ── Parse & validate query params ──────────────────────────────────
+    date_from = _parse_date(request.args.get("date_from"))
+    date_to   = _parse_date(request.args.get("date_to"))
 
-    # ── Format for template ───────────────────────────────────────────
+    # If only one bound is supplied, treat both as absent (spec §Rules)
+    if bool(date_from) != bool(date_to):
+        date_from = date_to = None
+
+    # Guard: start must not be after end
+    if date_from and date_to and date_from > date_to:
+        flash("Start date must be before end date.")
+        date_from = date_to = None
+
+    # ── Compute preset ranges in Python (never in the template) ──────────
+    today            = date.today()
+    today_iso        = today.isoformat()
+    first_of_month   = today.replace(day=1).isoformat()
+    three_months_ago = (today - timedelta(days=90)).isoformat()
+    six_months_ago   = (today - timedelta(days=180)).isoformat()
+
+    # Determine which preset button to highlight
+    if date_from is None and date_to is None:
+        active_preset = "all"
+    elif date_from == first_of_month and date_to == today_iso:
+        active_preset = "this_month"
+    elif date_from == three_months_ago and date_to == today_iso:
+        active_preset = "3months"
+    elif date_from == six_months_ago and date_to == today_iso:
+        active_preset = "6months"
+    else:
+        active_preset = "custom"
+
+    # ── Live DB queries (all respect the active date range) ─────────────
+    raw_stats = get_summary_stats(uid, date_from=date_from, date_to=date_to)
+    raw_txns  = get_recent_transactions(uid, limit=10, date_from=date_from, date_to=date_to)
+    raw_cats  = get_category_breakdown(uid, date_from=date_from, date_to=date_to)
+
+    # ── Format for template ─────────────────────────────────────────────
     stats = {
         "total_spent":       f"₹ {raw_stats['total_spent']:,.2f}",
         "transaction_count": raw_stats["transaction_count"],
@@ -164,6 +216,15 @@ def profile():
         stats=stats,
         transactions=transactions,
         categories=categories,
+        # filter state
+        date_from=date_from or "",
+        date_to=date_to or "",
+        active_preset=active_preset,
+        # preset URLs computed in Python via url_for
+        preset_this_month=url_for("profile", date_from=first_of_month, date_to=today_iso),
+        preset_3months=url_for("profile", date_from=three_months_ago, date_to=today_iso),
+        preset_6months=url_for("profile", date_from=six_months_ago,   date_to=today_iso),
+        preset_all=url_for("profile"),
     )
 
 
@@ -183,4 +244,5 @@ def delete_expense(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    _debug = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=_debug, port=5001)
