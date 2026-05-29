@@ -85,7 +85,7 @@ def register():
         flash("An account with that email already exists.")
         return render_template("register.html")
 
-    flash("Account created! Please log in.")
+    flash("Account created! Please log in.", "success")
     return redirect(url_for("login"))
 
 
